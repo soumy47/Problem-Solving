@@ -1,0 +1,84 @@
+class Solution {
+public:
+    
+    void floodfill(int i, int j ,char prev, char change, vector<vector<char>>& board )
+    {
+        int row = board.size();
+        int col = board[0].size();
+        
+        if(i<0 || j <0 || i>=row || j >= col)  
+            return;
+        
+        if(board[i][j] != prev)
+            return;
+        
+        board[i][j] = change;
+        floodfill(i + 1, j, prev, change, board);
+        floodfill(i - 1, j, prev, change, board);
+        floodfill(i, j + 1, prev, change, board);
+        floodfill(i, j - 1, prev, change, board);
+    
+    }
+    
+    void solve(vector<vector<char>>& board) {
+        int row = board.size();
+        int col = board[0].size();
+        
+        
+        // set all the O's to *
+        for(int i = 0; i<row ; i++){
+            for(int j = 0; j<col ; j++)
+                if(board[i][j] == 'O'){
+                    board[i][j] = '*';
+            }
+        }
+        
+        //step2 mark all boundry * to X and its surrounding
+        
+        for(int j = 0; j < col ; j++)
+        {
+            if(board[0][j] == '*')
+                floodfill(0, j, '*', '-', board);
+        }
+        
+        //2
+        for(int j = 0; j < col ; j++)
+        {
+            if(board[row -1][j] == '*')
+                floodfill(row - 1, j, '*', '-', board);
+        }
+        
+      //3
+        for(int i = 0; i < row ; i++)
+        {
+            int j = 0;
+            if(board[i][j] == '*')
+                floodfill(i, j, '*', '-', board);
+        }
+        
+        //4
+        for(int i = 0; i < row ; i++)
+        {
+            int j =  col - 1;
+            if(board[i][j] == '*')
+                floodfill(i, j, '*', '-', board);
+        }
+        
+        //set the remainig * to X
+         for(int i = 0; i<row ; i++){
+            for(int j = 0; j<col ; j++)
+                if(board[i][j] == '*'){
+                    board[i][j] = 'X';
+            }
+        }
+        //set uncaptured as O
+        for(int i = 0; i<row ; i++){
+            for(int j = 0; j<col ; j++)
+                if(board[i][j] == '-'){
+                    board[i][j] = 'O';
+            }
+        }
+        
+        
+    }
+};
