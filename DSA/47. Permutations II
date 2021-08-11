@@ -1,0 +1,48 @@
+class Solution {
+public:
+    
+    bool check(vector<int> &nums, int index , int i){
+        
+        for(int k = index; k < i ; k++)
+        {
+            if(nums[k] == nums[i])
+                return false;
+        }
+        return true;
+        
+    }
+    
+    void permute(int index, vector<int>& nums, vector<int> &v,  vector<vector<int>> &res){
+        if(index == nums.size())
+        {
+            res.push_back(v);
+            return;
+        }
+        
+        for(int i = index; i < nums.size(); i++){
+            
+        if(i != index &&  nums[i] == nums[index]) // duplicates
+                continue;
+            
+            if(check(nums , index , i))  // if same no. appear again
+            {
+                swap(nums[i], nums[index]);
+                v.push_back(nums[index]);
+
+                permute(index + 1, nums, v, res);
+
+                v.pop_back();
+                swap(nums[i], nums[index]);     
+            }   
+        }
+    }
+    
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> v;
+        
+        sort(nums.begin(), nums.end());
+        permute(0, nums, v, res);
+        return res;
+    }
+};
